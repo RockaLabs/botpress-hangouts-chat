@@ -25,7 +25,7 @@ const sendMessageApiEndpoint = spaceName =>
  * Authorizes the Google API client. You must call this before using any other
  * method in this module.
  * @param {GoogleJsonKeys} keys
- * @returns {Promise<void>} Nothing, try as a Promise
+ * @returns {Promise<void>} Nothing, treat as a Promise
  */
 export async function authGoogleClient(keys) {
   if (!keys || !keys.client_email || !keys.private_key) {
@@ -47,9 +47,11 @@ export async function authGoogleClient(keys) {
 
 /**
  * Sends a message to the specified space.
+ * See https://developers.google.com/hangouts/chat/reference/rest/v1/spaces.messages/create
+ * for more info.
  * @param {HangoutsChatSpace} space
  * @param {string} message
- * @returns {Promise<void>} Nothing, try as a Promise
+ * @returns {Promise<void>} Nothing, treat as a Promise
  */
 export async function sendMessage(space, message) {
   try {
