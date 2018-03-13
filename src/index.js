@@ -1,8 +1,3 @@
-/*
-  Botpress module template. This is your module's entry point.
-  Please have a look at the docs for more information about config, init and ready.
-  https://botpress.io/docs
-*/
 import * as outgoing from './outgoing';
 
 export const config = {
@@ -21,8 +16,6 @@ export const config = {
 };
 
 export async function init(bp, configurator) {
-  // This is called before ready.
-  // At this point your module is just being initialized, it is not loaded yet.
   const config = await configurator.loadAll();
   await outgoing.authGoogleClient(config);
 
@@ -31,11 +24,9 @@ export async function init(bp, configurator) {
 }
 
 export async function ready(bp, configurator) {
-  // Your module's been loaded by Botpress.
-  // Serve your APIs here, execute logic, etc.
   const router = bp.getRouter('botpress-hangouts-chat');
 
-  // http://localhost:3000/api/botpress-hangouts-chat
+  // https://.../api/botpress-hangouts-chat
   router.post('/', async (req, res) => {
     const event = req.body;
     if (!event || !event.type) {
