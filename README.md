@@ -2,21 +2,6 @@
 
 Hangouts Chat connector for Botpress
 
-## Testing locally
-
-To use with your own bot, you have to install this module in your botpress project
-
-```
-botpress install /path/to/botpress-hangouts-chat
-```
-
-Now you can use the npm link command to link the module with a symbolic link
-(instead of having to re-install it at every change):
-
-```
-npm link /path/to/botpress-hangouts-chat
-```
-
 ### Example usage
 
 #### `index.js`
@@ -45,6 +30,22 @@ module.exports = function(bp) {
     }
   );
 };
+```
+
+## Installing
+
+To use with your own bot, you have to install this module in your botpress
+project
+
+```
+botpress install /path/to/botpress-hangouts-chat
+```
+
+Now you can use the `npm link` command to link the module with a symbolic link
+(instead of having to re-install it at every change):
+
+```
+npm link /path/to/botpress-hangouts-chat
 ```
 
 ## Reference
@@ -97,7 +98,7 @@ If you're added to an user's direct message
 
 #### Message
 
-An event is sent to middlewares for each incoming text message from
+An event is sent to middlewares for each incoming message from
 Hangouts Chat (a DM or when someone in a room @ your bot) with all specific
 information.
 
@@ -125,7 +126,7 @@ information.
 
 ### Outgoing
 
-As of right now, with this modules you can only send text messages. We expect
+As of right now, with this module you can only send text messages. We expect
 to support cards in the future.
 
 #### Text
