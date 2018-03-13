@@ -48,6 +48,32 @@ Now you can use the `npm link` command to link the module with a symbolic link
 npm link /path/to/botpress-hangouts-chat
 ```
 
+## Get started
+
+To setup connexion of your chatbot to Hangouts Chat, you need to fill the
+connexion settings. As of right now, you need to put these manually in your
+`botfile.js`
+
+```javascript
+module.exports = {
+  ...
+  config: {
+    'botpress-hangouts-chat': {
+      client_email: '',
+      private_key: '',
+      verification_token: ''
+    }
+  },
+  ...
+```
+
+`client_email` and `private_key` will be in the JSON private key that
+Google Cloud gives you when you create a service account
+(see [Hangouts Chat docs](https://developers.google.com/hangouts/chat/how-tos/service-accounts#creating_and_using_a_service_account)).
+`verification_token` will be in the "API & Services" dashboard in your
+Google Cloud developer console, in the Hangouts Chat API configuration
+tab (see [Hangouts Chat docs](https://developers.google.com/hangouts/chat/how-tos/bots-develop#verifying_bot_authenticity)).
+
 ## Reference
 
 ### Incoming
