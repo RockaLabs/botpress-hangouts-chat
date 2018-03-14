@@ -85,16 +85,21 @@ You can listen to incoming event easily with Botpress by using `bp` built-in
 bp.hear(
   { platform: 'hangouts-chat', type: 'message', text: 'Hello' },
   (event, next) => {
-    bp.hangoutsChat.sendMessage(event.channel.id, 'Welcome!');
+    bp.hangoutsChat.sendMessage(event.space, 'Welcome!');
   }
 );
 ```
 
 Bellow is the information we provide in `event` for each type of event.
-If you want more details about the `space` object, see the
-[Hangouts Chat Docs](https://developers.google.com/hangouts/chat/reference/rest/v1/spaces).
-Same for the
-[raw event object](https://developers.google.com/hangouts/chat/reference/message-formats/events).
+If you want more details about the Hangouts Chat objects, see the documentation
+for:
+
+* [Spaces](https://developers.google.com/hangouts/chat/reference/rest/v1/spaces)
+  (sent as `event.space`)
+* [Users](https://developers.google.com/hangouts/chat/reference/rest/v1/User)
+  (sent as `event.user`)
+* [Events](https://developers.google.com/hangouts/chat/reference/message-formats/events)
+  (sent as `event.raw`)
 
 #### Added to space
 
@@ -106,6 +111,7 @@ If you're added to a room
   platform: 'hangouts-chat',
   text: 'ADDED_TO_SPACE_ROOM',
   space: [Object],
+  user: [Object],
   raw: [Object]
 }
 ```
@@ -118,6 +124,7 @@ If you're added to an user's direct message
   platform: 'hangouts-chat',
   text: 'ADDED_TO_SPACE_DM',
   space: [Object],
+  user: [Object],
   raw: [Object]
 }
 ```
@@ -134,6 +141,7 @@ information.
   platform: 'hangouts-chat',
   text: [String],
   space: [Object],
+  user: [Object],
   raw: [Object]
 }
 ```
@@ -146,6 +154,7 @@ information.
   platform: 'hangouts-chat',
   text: 'REMOVED_FROM_SPACE',
   space: [Object],
+  user: [Object],
   raw: [Object]
 }
 ```

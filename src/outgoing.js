@@ -1,7 +1,7 @@
 /**
  * @typedef HangoutsChatSpace
  * @type {object}
- * @property {string} name.
+ * @property {string} name
  * @property {"TYPE_UNSPECIFIED" | "ROOM" | "DM"} type
  * @property {string} displayName
  *
@@ -11,7 +11,7 @@
  * @property {string} private_key
  */
 
-const { google } = require('googleapis');
+import { google } from 'googleapis';
 
 let authClient;
 
