@@ -181,3 +181,15 @@ In code, it is simple to send a message text to a specific space
 
 (Promise) The promise resolves when the message was successfully sent to
 Hangouts Chat, and throws an error otherwise.
+
+#### Creating actions without sending them
+
+You can create middleware events without sending then to the outgoing
+middleware. This is useful for example in conversations:
+
+```javascript
+// This message won't be sent
+const message = bp.hangoutsChat.createMessage(event.space, 'Hello!');
+// But `message` is a fully formed middleware event object, ready to be sent
+convo.threads['default'].addMessage(message);
+```
