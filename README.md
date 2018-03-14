@@ -34,8 +34,10 @@ module.exports = function(bp) {
 
 ## Installing
 
-To use with your own bot, you have to install this module in your botpress
-project
+We haven't published to npm, so please clone this repository somewhere
+and compile it with `npm rum compile`. You can also run `npm run watch` to
+automatically recompile when you make changes (useful when developing).
+After that, you can install this module in your botpress project.
 
 ```
 botpress install /path/to/botpress-hangouts-chat
