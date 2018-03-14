@@ -60,6 +60,7 @@ export function init(bp, configurator) {
     bp.middlewares.sendOutgoing(
       actions.createMessageOutgoingEvent(space, message)
     );
+  bp.hangoutsChat.createMessage = actions.createMessageOutgoingEvent;
 
   umm.registerUmmConnector(bp);
 }
