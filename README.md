@@ -76,6 +76,12 @@ Google Cloud gives you when you create a service account
 Google Cloud developer console, in the Hangouts Chat API configuration
 tab (see [Hangouts Chat docs](https://developers.google.com/hangouts/chat/how-tos/bots-develop#verifying_bot_authenticity)).
 
+You also have to append `/api/botpress-hangouts-chat` at the end of the
+"Bot URL" field in the connection settings of the Hangouts Chat API
+configuration in your Google Cloud developer console (e.g. if your base
+URL is `https://example.com`, then this field should contain 
+`https://example.com/api/botpress-hangouts-chat`.
+
 ## Reference
 
 ### Incoming
