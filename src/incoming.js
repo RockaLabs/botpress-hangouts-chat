@@ -25,7 +25,7 @@ export function setUpIncomingEvents(bp, verificationToken) {
             platform: 'hangouts-chat',
             text: 'ADDED_TO_SPACE_ROOM',
             space: event.space,
-            user: event.user,
+            user: { id: event.user.name, ...event.user },
             raw: event
           });
         } else if (event.space.type === 'DM') {
@@ -34,7 +34,7 @@ export function setUpIncomingEvents(bp, verificationToken) {
             platform: 'hangouts-chat',
             text: 'ADDED_TO_SPACE_DM',
             space: event.space,
-            user: event.user,
+            user: { id: event.user.name, ...event.user },
             raw: event
           });
         }
@@ -46,7 +46,7 @@ export function setUpIncomingEvents(bp, verificationToken) {
           platform: 'hangouts-chat',
           text: event.message.text,
           space: event.space,
-          user: event.user,
+          user: { id: event.user.name, ...event.user },
           raw: event
         });
         break;
@@ -57,7 +57,7 @@ export function setUpIncomingEvents(bp, verificationToken) {
           platform: 'hangouts-chat',
           text: 'REMOVED_FROM_SPACE',
           space: event.space,
-          user: event.user,
+          user: { id: event.user.name, ...event.user },
           raw: event
         });
         break;
