@@ -52,22 +52,9 @@ npm link /path/to/botpress-hangouts-chat
 
 ## Get started
 
-To setup connexion of your chatbot to Hangouts Chat, you need to fill the
-connexion settings. As of right now, you need to put these manually in your
-`botfile.js`
-
-```javascript
-module.exports = {
-  ...
-  config: {
-    'botpress-hangouts-chat': {
-      client_email: '',
-      private_key: '',
-      verification_token: ''
-    }
-  },
-  ...
-```
+To setup connexion of your chatbot to Hangouts Chat, you need to go to
+`http://localhost:3000/modules/botpress-hangouts-chat` (change the port if
+necessary) and enter your credentials.
 
 `client_email` and `private_key` will be in the JSON private key that
 Google Cloud gives you when you create a service account
@@ -79,7 +66,7 @@ tab (see [Hangouts Chat docs](https://developers.google.com/hangouts/chat/how-to
 You also have to append `/api/botpress-hangouts-chat` at the end of the
 "Bot URL" field in the connection settings of the Hangouts Chat API
 configuration in your Google Cloud developer console (e.g. if your base
-URL is `https://example.com`, then this field should contain 
+URL is `https://example.com`, then this field should contain
 `https://example.com/api/botpress-hangouts-chat`.
 
 ## Reference

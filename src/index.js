@@ -2,6 +2,7 @@ import * as incoming from './incoming';
 import * as outgoing from './outgoing';
 import * as umm from './umm';
 import * as actions from './actions';
+import * as configUi from './configUi';
 import { EventTypes } from './events';
 
 function outgoingMiddleware(event, next) {
@@ -67,6 +68,14 @@ export function init(bp, configurator) {
 
 export async function ready(bp, configurator) {
   const config = await configurator.loadAll();
-  await outgoing.authGoogleClient(config);
+  try {
+    config.privateKey = config.privateKey.replace(/\\n/g, '\n');
+    await outgoing.authGoogleClient(config);
+  } catch (e) {
+    console.log(
+      'Hangouts Chat error: Something went wrong authenticating, check your credentials'
+    );
+  }
   incoming.setUpIncomingEvents(bp, config.verificationToken);
+  configUi.setUpApiForConfigUi(bp, configurator);
 }

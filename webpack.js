@@ -1,6 +1,6 @@
-var webpack = require('webpack')
-var nodeExternals = require('webpack-node-externals')
-var pkg = require('./package.json')
+var webpack = require('webpack');
+var nodeExternals = require('webpack-node-externals');
+var pkg = require('./package.json');
 
 var nodeConfig = {
   devtool: 'source-map',
@@ -27,7 +27,10 @@ var nodeConfig = {
         exclude: /node_modules/,
         query: {
           presets: ['latest', 'stage-0'],
-          plugins: ['transform-object-rest-spread', 'transform-async-to-generator']
+          plugins: [
+            'transform-object-rest-spread',
+            'transform-async-to-generator'
+          ]
         }
       },
       {
@@ -36,7 +39,7 @@ var nodeConfig = {
       }
     ]
   }
-}
+};
 
 var webConfig = {
   devtool: 'source-map',
@@ -63,14 +66,19 @@ var webConfig = {
         exclude: /node_modules/,
         query: {
           presets: ['latest', 'stage-0', 'react'],
-          plugins: ['transform-object-rest-spread', 'transform-decorators-legacy']
+          plugins: [
+            'transform-object-rest-spread',
+            'transform-decorators-legacy'
+          ]
         }
       },
       {
         test: /\.scss$/,
         loaders: [
           'style',
-          'css?modules&importLoaders=1&localIdentName=' + pkg.name + '__[name]__[local]___[hash:base64:5]',
+          'css?modules&importLoaders=1&localIdentName=' +
+            pkg.name +
+            '__[name]__[local]___[hash:base64:5]',
           'sass'
         ]
       },
@@ -85,10 +93,14 @@ var webConfig = {
       {
         test: /\.json$/,
         loader: 'json-loader'
+      },
+      {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=100000'
       }
     ]
   }
-}
+};
 
 const liteConfig = Object.assign({}, webConfig, {
   // Add your lite views here, see example below
@@ -102,24 +114,24 @@ const liteConfig = Object.assign({}, webConfig, {
     libraryTarget: 'assign',
     library: ['botpress', pkg.name]
   }
-})
+});
 
-var compiler = webpack([nodeConfig, webConfig, liteConfig])
+var compiler = webpack([nodeConfig, webConfig, liteConfig]);
 var postProcess = function(err, stats) {
   if (err) {
-    throw err
+    throw err;
   }
-  console.log(stats.toString('minimal'))
-}
+  console.log(stats.toString('minimal'));
+};
 
 if (process.argv.indexOf('--compile') !== -1) {
-  compiler.run(postProcess)
+  compiler.run(postProcess);
 } else if (process.argv.indexOf('--watch') !== -1) {
-  compiler.watch(null, postProcess)
+  compiler.watch(null, postProcess);
 }
 
 module.exports = {
   web: webConfig,
   node: nodeConfig,
   lite: liteConfig
-}
+};

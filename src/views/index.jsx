@@ -1,182 +1,88 @@
 import React from 'react';
+import { Button, Container, Form } from 'semantic-ui-react';
 
-import {
-  Form,
-  FormGroup,
-  FormControl,
-  Col,
-  Button,
-  ControlLabel
-} from 'react-bootstrap';
+import 'semantic-ui-css/semantic.min.css';
 
-import _ from 'lodash';
-import axios from 'axios';
+class HangoutsChatModule extends React.Component {
+  state = {
+    clientEmail: '',
+    privateKey: '',
+    verificationToken: ''
+  };
 
-import style from './style.scss';
-
-export default class HangoutsChatModule extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      loading: true,
-      clientEmail: '',
-      privateKey: '',
-      verificationToken: '',
-      hashState: null
-    };
+    this.fetchConfig = this.fetchConfig.bind(this);
+    this.setConfig = this.setConfig.bind(this);
+    this.setConfigValueInState = this.setConfigValueInState.bind(this);
   }
 
   componentDidMount() {
-    this.fetchConfig().then(() => {
-      this.authenticate();
+    this.fetchConfig();
+  }
+
+  fetchConfig() {
+    fetch('/api/botpress-hangouts-chat/config')
+      .then(res => res.json())
+      .then(config => this.setState(config));
+  }
+
+  setConfig() {
+    fetch('/api/botpress-hangouts-chat/config', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(this.state)
+    }).then(res => {
+      if (res.status === 401) {
+        alert('Something went wrong authenticating, check your credentials');
+      } else {
+        alert('You can now send messages :)');
+      }
     });
   }
 
-  getAxios = () => this.props.bp.axios;
-  mApi = (method, url, body) =>
-    this.getAxios()[method]('/api/botpress-hangouts-chat' + url, body);
-  mApiGet = (url, body) => this.mApi('get', url, body);
-  mApiPost = (url, body) => this.mApi('post', url, body);
-
-  fetchConfig = () => {
-    return this.mApiGet('/config')
-      .then(({ data }) => {
-        this.setState({
-          clientEmail: data.clientEmail,
-          privateKey: data.privateKey,
-          verificationToken: data.verificationToken,
-          loading: false
-        });
-
-        setImmediate(() => {
-          this.setState({
-            hashState: this.getHashState()
-          });
-        });
-      })
-      .catch(console.log);
-  };
-
-  getHashState = () => {
-    const values = _.omit(this.state, ['loading', 'hashState']);
-    return _.join(_.toArray(values), '_');
-  };
-
-  getRedictURI = () => {
-    return this.state.hostname + '/modules/botpress-hangouts-chat';
-  };
-
-  handleChange = event => {
-    const { name, value } = event.target;
-
-    this.setState({
-      [name]: value
-    });
-  };
-
-  handleSaveConfig = () => {
-    this.mApiPost('/config', {
-      clientEmail: this.state.clientID,
-      privateKey: this.state.privateKey,
-      verificationToken: this.state.verificationToken,
-      scope: this.state.scope
-    })
-      .then(({ data }) => {
-        this.fetchConfig();
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-  // ----- render functions -----
-
-  renderHeader = title => (
-    <div className={style.header}>
-      <h4>{title}</h4>
-      {this.renderSaveButton()}
-    </div>
-  );
-
-  renderLabel = label => {
-    return (
-      <Col componentClass={ControlLabel} sm={3}>
-        {label}
-      </Col>
-    );
-  };
-
-  renderInput = (label, name, props = {}) => (
-    <FormGroup>
-      {this.renderLabel(label)}
-      <Col sm={7}>
-        <FormControl
-          name={name}
-          {...props}
-          value={this.state[name]}
-          onChange={this.handleChange}
-        />
-      </Col>
-    </FormGroup>
-  );
-
-  renderTextInput = (label, name, props = {}) =>
-    this.renderInput(label, name, {
-      type: 'text',
-      ...props
-    });
-
-  renderSaveButton = () => {
-    let opacity = 0;
-    if (this.state.hashState && this.state.hashState !== this.getHashState()) {
-      opacity = 1;
-    }
-
-    return (
-      <Button
-        className={style.formButton}
-        style={{ opacity: opacity }}
-        onClick={this.handleSaveConfig}
-      >
-        Save
-      </Button>
-    );
-  };
-
-  renderConfigSection = () => {
-    console.log('style:', style.section);
-    return (
-      <div className={style.section}>
-        {this.renderHeader('Configuration')}
-
-        {this.renderTextInput('Hostname', 'hostname', {
-          placeholder: 'e.g. https://a9f849c4.ngrok.io'
-        })}
-
-        {this.renderTextInput('Client email', 'clientEmail', {
-          placeholder: 'Paste your client email here...'
-        })}
-
-        {this.renderTextInput('Private Key', 'privateKey', {
-          placeholder: 'Paste your private key here...'
-        })}
-
-        {this.renderTextInput('Verification Token', 'verificationToken', {
-          placeholder: 'Paste your verification token here...'
-        })}
-      </div>
-    );
-  };
+  setConfigValueInState(e, { name, value }) {
+    if (!(name in this.state)) return;
+    this.setState({ [name]: value });
+  }
 
   render() {
-    //if (this.state.loading) {
-    //    return null
-    //}
+    const { clientEmail, privateKey, verificationToken } = this.state;
 
     return (
-      <Col md={10} mdOffset={1}>
-        <Form horizontal>{this.renderConfigSection()}</Form>
-      </Col>
+      <Container>
+        <Form onSubmit={this.setConfig}>
+          <Form.Field>
+            <label>Client email</label>
+            <Form.Input
+              value={clientEmail}
+              name="clientEmail"
+              onChange={this.setConfigValueInState}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Private key</label>
+            <Form.Input
+              value={privateKey}
+              name="privateKey"
+              onChange={this.setConfigValueInState}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Verification token</label>
+            <Form.Input
+              value={verificationToken}
+              name="verificationToken"
+              onChange={this.setConfigValueInState}
+            />
+          </Form.Field>
+          <Button primary type="submit">
+            Authorize
+          </Button>
+        </Form>
+      </Container>
     );
   }
 }
+
+export default HangoutsChatModule;

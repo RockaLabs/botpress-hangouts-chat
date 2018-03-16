@@ -29,7 +29,8 @@ const sendMessageApiEndpoint = spaceName =>
  */
 export async function authGoogleClient(keys) {
   if (!keys || !keys.clientEmail || !keys.privateKey) {
-    throw new Error('You need to specify config');
+    console.log('Please enter your credentials in the module UI');
+    return;
   }
 
   try {
