@@ -24,19 +24,19 @@ function outgoingMiddleware(event, next) {
 }
 
 export const config = {
-  client_email: {
+  clientEmail: {
     type: 'string',
     required: true,
     env: 'GOOGLE_CLIENT_EMAIL',
     default: ''
   },
-  private_key: {
+  privateKey: {
     type: 'string',
     required: true,
     env: 'GOOGLE_PRIVATE_KEY',
     default: ''
   },
-  verification_token: {
+  verificationToken: {
     type: 'string',
     required: true,
     env: 'HANGOUTS_CHAT_BOT_VERIFICATION_TOKEN',
