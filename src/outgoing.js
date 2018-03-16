@@ -7,8 +7,8 @@
  *
  * @typedef GoogleJsonKeys
  * @type {object}
- * @property {string} client_email
- * @property {string} private_key
+ * @property {string} clientEmail
+ * @property {string} privateKey
  */
 
 import { google } from 'googleapis';
@@ -28,17 +28,14 @@ const sendMessageApiEndpoint = spaceName =>
  * @returns {Promise<void>} Nothing, treat as a Promise
  */
 export async function authGoogleClient(keys) {
-  if (!keys || !keys.client_email || !keys.private_key) {
+  if (!keys || !keys.clientEmail || !keys.privateKey) {
     throw new Error('You need to specify config');
   }
 
   try {
-    authClient = new google.auth.JWT(
-      keys.client_email,
-      null,
-      keys.private_key,
-      ['https://www.googleapis.com/auth/chat.bot']
-    );
+    authClient = new google.auth.JWT(keys.clientEmail, null, keys.privateKey, [
+      'https://www.googleapis.com/auth/chat.bot'
+    ]);
     await authClient.authorize();
   } catch (err) {
     throw err;

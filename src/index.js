@@ -68,5 +68,5 @@ export function init(bp, configurator) {
 export async function ready(bp, configurator) {
   const config = await configurator.loadAll();
   await outgoing.authGoogleClient(config);
-  incoming.setUpIncomingEvents(bp, config.verification_token);
+  incoming.setUpIncomingEvents(bp, config.verificationToken);
 }
