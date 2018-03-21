@@ -29,6 +29,48 @@
  * @property {string} imageUrl
  * @property {?number} aspectRatio
  */
+/**
+ * @typedef KeyValueWidget
+ * @type {object}
+ * @property {string} topLabel
+ * @property {string} content
+ * @property {boolean} contentMultiline
+ * @property {string} bottomLabel
+ * @property {?string} icon
+ */
+
+const icons = new Set([
+  'AIRPLANE',
+  'BOOKMARK',
+  'BUS',
+  'CAR',
+  'CLOCK',
+  'CONFIRMATION_NUMBER_ICON',
+  'DOLLAR',
+  'DESCRIPTION',
+  'EMAIL',
+  'EVENT_PERFORMER',
+  'EVENT_SEAT',
+  'FLIGHT_ARRIVAL',
+  'FLIGHT_DEPARTURE',
+  'HOTEL',
+  'HOTEL_ROOM_TYPE',
+  'INVITE',
+  'MAP_PIN',
+  'MEMBERSHIP',
+  'MULTIPLE_PEOPLE',
+  'OFFER',
+  'PERSON',
+  'PHONE',
+  'RESTAURANT_ICON',
+  'SHOPPING_CART',
+  'STAR',
+  'STORE',
+  'TICKET',
+  'TRAIN',
+  'VIDEO_CAMERA',
+  'VIDEO_PLAY'
+]);
 
 /**
  * Creates a card object
@@ -83,4 +125,28 @@ export function createImageWidget({ imageUrl = '', aspectRatio = undefined }) {
     return { image: { imageUrl, aspectRatio } };
   }
   return { image: { imageUrl } };
+}
+
+export function createKeyValueWidget({
+  topLabel = '',
+  content = '',
+  contentMultiline = false,
+  bottomLabel = '',
+  icon = undefined
+}) {
+  if (!icon && !topLabel && !bottomLabel) {
+    throw new Error(
+      'At least one of `icon`, `topLabel` and `bottomLabel` must be defined'
+    );
+  }
+  const widget = {
+    keyValue: { topLabel, content, contentMultiline, bottomLabel }
+  };
+  if (icon) {
+    if (!icons.has(icon)) {
+      throw new Error(`Unknown icon ${icon}`);
+    }
+    widget.keyValue.icon = icon;
+  }
+  return widget;
 }
