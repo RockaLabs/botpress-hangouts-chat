@@ -272,6 +272,7 @@ composed of widgets. See more information about cards in the
   supported. Defaults to `''`.
 * `icon` (String): An [enum value](https://developers.google.com/hangouts/chat/reference/message-formats/cards#builtinicons)
   that will be replaced by the Chat API with the corresponding icon image.
+  Defaults to `undefined`.
 
 ##### Returns
 
