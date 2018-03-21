@@ -249,8 +249,8 @@ composed of widgets. See more information about cards in the
 ##### Arguments
 
 * `imageUrl` (String): The URL of the image.
-* `aspectRatio` (String): The aspect ratio of this image (width/height).
-  Defaults to `''`.
+* `aspectRatio` (Number): The aspect ratio of this image (width/height).
+  Defaults to `undefined`, meaning the original aspect ratio.
 
 ##### Returns
 
