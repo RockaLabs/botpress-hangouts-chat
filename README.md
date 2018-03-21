@@ -137,6 +137,7 @@ information.
   text: [String],
   space: [Object],
   user: [Object],
+  thread: [String],
   raw: [Object]
 }
 ```
