@@ -9,7 +9,7 @@
  * @type {object}
  * @property {string} title
  * @property {string} subtitle
- * @property {undefined | '' | IMAGE' | 'AVATAR'} imageStyle
+ * @property {undefined | 'IMAGE' | 'AVATAR'} imageStyle
  * @property {?string} imageUrl
  */
 /**
@@ -94,6 +94,9 @@ export function createCardHeader({
 }) {
   if (!imageStyle || !imageUrl) {
     return { title, subtitle };
+  }
+  if (imageUrl && imageStyle !== 'IMAGE' && imageStyle !== 'AVATAR') {
+    throw new Error('`imageStyle` must be IMAGE or AVATAR');
   }
   return { title, subtitle, imageStyle, imageUrl };
 }

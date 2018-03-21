@@ -2,9 +2,9 @@
 
 Hangouts Chat connector for Botpress
 
-### Example usage
+## Example usage
 
-#### `index.js`
+### `index.js`
 
 ```javascript
 module.exports = function(bp) {
@@ -32,7 +32,7 @@ module.exports = function(bp) {
 };
 ```
 
-## Installing
+# Installing
 
 We haven't published to npm, so please clone this repository somewhere
 and compile it with `npm rum compile`. You can also run `npm run watch` to
@@ -50,7 +50,7 @@ Now you can use the `npm link` command to link the module with a symbolic link
 npm link /path/to/botpress-hangouts-chat
 ```
 
-## Get started
+# Get started
 
 To setup connexion of your chatbot to Hangouts Chat, you need to go to
 `http://localhost:3000/modules/botpress-hangouts-chat` (change the port if
@@ -69,9 +69,9 @@ configuration in your Google Cloud developer console (e.g. if your base
 URL is `https://example.com`, then this field should contain
 `https://example.com/api/botpress-hangouts-chat`.
 
-## Reference
+# Reference
 
-### Incoming
+## Incoming
 
 You can listen to incoming event easily with Botpress by using `bp` built-in
 `hear` function.
@@ -96,7 +96,7 @@ for:
 * [Events](https://developers.google.com/hangouts/chat/reference/message-formats/events)
   (sent as `event.raw`)
 
-#### Added to space
+### Added to space
 
 If you're added to a room
 
@@ -124,7 +124,7 @@ If you're added to an user's direct message
 }
 ```
 
-#### Message
+### Message
 
 An event is sent to middlewares for each incoming message from
 Hangouts Chat (a DM or when someone in a room @ your bot) with all specific
@@ -142,7 +142,7 @@ information.
 }
 ```
 
-#### Removed from space
+### Removed from space
 
 ```javascript
 {
@@ -155,33 +155,172 @@ information.
 }
 ```
 
-### Outgoing
+## Outgoing
 
-As of right now, with this module you can only send text messages. We expect
-to support cards in the future.
-
-#### Text
+With this module you can send text messages and include cards. We don't support
+card actions or buttons as of right now.
 
 In code, it is simple to send a message text to a specific space
 (see [Hangouts Chat docs](https://developers.google.com/hangouts/chat/reference/rest/v1/spaces.messages/create)).
 
-##### `bp.hangoutsChat.sendMessage(space, text)`
+##### `bp.hangoutsChat.sendMessage(space, text, cards)`
 
 ##### Arguments
 
 1.  `space` (Object): A Hangouts Chat Space object, corresponding to the space
     where you want to send a message, see [Hangouts Chat Docs for spaces](https://developers.google.com/hangouts/chat/reference/rest/v1/spaces).
 1.  `text` (String): Text message that will be sent to `space`.
+1.  `cards` (Array of cards): The cards that will be sent. Defaults to
+    `[]`. See below how to create cards.
 
 ##### Returns
 
-(Promise) The promise resolves with the response from the server
-when the message was successfully sent to Hangouts Chat, and throws an error
-otherwise.
+* (Promise) The promise resolves with the response from the server
+  when the message was successfully sent to Hangouts Chat, and throws an error
+  otherwise.
 
-#### Creating actions without sending them
+### Creating cards
 
-You can create middleware events without sending then to the outgoing
+Cards in Hangouts Chat have a header and various sections. Each section is
+composed of widgets. See more information about cards in the
+[Hangouts Chat documentation](https://developers.google.com/hangouts/chat/reference/rest/v1/cards).
+
+#### Card
+
+##### `bp.hangoutsChat.cards.createCard({ header, sections })`
+
+##### Arguments
+
+* `header` (Card header object): The cards's header. Defaults to `{}`.
+* `sections` (Array of section objects): The sections of the card. Defaults to
+  `[]`.
+
+##### Returns
+
+* (Object) A card object.
+
+#### Card header
+
+##### `bp.hangoutsChat.cards.createCardHeader({ title, subtitle, imageStyle, imageUrl })`
+
+##### Arguments
+
+* `title` (String): The header's title. Defaults to `''`.
+* `subtitle` (String): The header's subtitle. Defaults to `''`.
+* `imageStyle` ('IMAGE' | 'AVATAR'): The header's image style. 'IMAGE' means
+  square border, 'AVATAR' means circular border. Defaults to `undefined`.
+* `imageUrl` (String): The header's image. Defaults to `undefined`.
+
+##### Returns
+
+* (Object) A card header object.
+
+#### Section
+
+##### `bp.hangoutsChat.cards.createSection({ header, widgets })`
+
+##### Arguments
+
+* `header` (String): The section's title, text formatting supported.
+  Defaults to `''`.
+* `widgets` (Array of widgets): The widgets of the section. Defaults to `[]`.
+
+##### Returns
+
+* (Object) A section object.
+
+#### Text paragraph widget
+
+##### `bp.hangoutsChat.cards.createTextParagraphWidget(text)`
+
+##### Arguments
+
+* `text` (String): Text to be displayed, text formatting supported.
+  Defaults to `''`.
+
+##### Returns
+
+* (Object) A widget object.
+
+#### Image widget
+
+##### `bp.hangoutsChat.cards.createImageWidget({ imageUrl, aspectRatio })`
+
+##### Arguments
+
+* `imageUrl` (String): The URL of the image.
+* `aspectRatio` (String): The aspect ratio of this image (width/height).
+  Defaults to `''`.
+
+##### Returns
+
+* (Object) A widget object.
+
+#### KeyValue widget
+
+##### `bp.hangoutsChat.cards.createKeyValueWidget({ topLabel, content, contentMultiline, bottomLabel, icon })`
+
+##### Arguments
+
+* `topLabel` (String): The text of the top label. Formatted text supported.
+  Defaults to `''`.
+* `content` (String): The text of the content. Formatted text supported.
+  Defaults to `''`.
+* `contentMultiline` (Boolean): If the content should be multiline.
+* `bottomLabel` (String): The text of the bottom label. Formatted text
+  supported.
+* `icon` (String): An [enum value](https://developers.google.com/hangouts/chat/reference/message-formats/cards#builtinicons)
+  that will be replaced by the Chat API with the corresponding icon image.
+
+##### Returns
+
+* (Object) A widget object.
+
+#### Example
+
+```javascript
+// Create a section with a text paragraph widget and a key-value widget
+const textWidget = bp.hangoutsChat.cards.createTextParagraphWidget(
+  '<b>Roses</b> are <font color="#ff0000">red</font>,<br><i>Violets</i> are <font color="#0000ff">blue</font>'
+);
+const keyValueWidget = bp.hangoutsChat.cards.createKeyValueWidget({
+  topLabel: 'Key',
+  content: 'Value',
+  icon: 'STAR'
+});
+const textSection = bp.hangoutsChat.cards.createSection({
+  header: 'Text header',
+  widgets: [textWidget, keyValueWidget]
+});
+
+// Create a section with an image widget
+const imageWidget = bp.hangoutsChat.cards.createImageWidget({
+  imageUrl: 'http://oi40.tinypic.com/flevpd.jpg'
+});
+const imageSection = bp.hangoutsChat.cards.createSection({
+  header: 'Image header',
+  widgets: [imageWidget]
+});
+
+// Create the card's header
+const header = bp.hangoutsChat.cards.createCardHeader({
+  title: 'Title',
+  subtitle: 'Subtitle'
+});
+
+// Create a card
+const card = bp.hangoutsChat.cards.createCard({
+  header,
+  sections: [textSection, imageSection]
+});
+
+// Note that you must always pass an array of cards to hangoutsChat.sendMessage
+bp.hangoutsChat.sendMessage(event.space, '', [card]);
+```
+
+### Creating actions without sending them
+
+You can create middleware events without sending them to the outgoing
 middleware. This is useful for example in conversations:
 
 ```javascript
