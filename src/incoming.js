@@ -47,6 +47,7 @@ export function setUpIncomingEvents(bp, verificationToken) {
           text: event.message.text,
           space: event.space,
           user: { id: event.user.name, ...event.user },
+          thread: event.message.thread.name,
           raw: event
         });
         break;
