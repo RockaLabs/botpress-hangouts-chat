@@ -46,10 +46,11 @@ export async function authGoogleClient(keys) {
 /**
  * Sends a message to the specified space.
  * See https://developers.google.com/hangouts/chat/reference/rest/v1/spaces.messages/create
- * for more info.
+ * for more info. Throws if the HTTP status code from the response is different
+ * than 200.
  * @param {HangoutsChatSpace} space
  * @param {string} message
- * @returns {Promise<void>} Nothing, treat as a Promise
+ * @returns {Promise<*>} Response from Hangouts Chat
  */
 export async function sendMessage(space, message) {
   try {
@@ -68,6 +69,7 @@ export async function sendMessage(space, message) {
         }-${apiRequest.statusText}`
       );
     }
+    return apiRequest.data;
   } catch (err) {
     throw err;
   }

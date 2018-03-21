@@ -175,8 +175,9 @@ In code, it is simple to send a message text to a specific space
 
 ##### Returns
 
-(Promise) The promise resolves when the message was successfully sent to
-Hangouts Chat, and throws an error otherwise.
+(Promise) The promise resolves with the response from the server
+when the message was successfully sent to Hangouts Chat, and throws an error
+otherwise.
 
 #### Creating actions without sending them
 
