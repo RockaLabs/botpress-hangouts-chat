@@ -3,6 +3,7 @@ import * as outgoing from './outgoing';
 import * as umm from './umm';
 import * as actions from './actions';
 import * as configUi from './configUi';
+import * as cards from './cards';
 import { EventTypes } from './events';
 
 function outgoingMiddleware(event, next) {
@@ -15,7 +16,7 @@ function outgoingMiddleware(event, next) {
       if (!event.space) {
         return next(`Space missing in message event`);
       }
-      outgoing.sendMessage(event.space, event.text);
+      outgoing.sendMessage(event.space, event.text, event.cards);
       break;
     }
     default: {
@@ -57,11 +58,12 @@ export function init(bp, configurator) {
   });
 
   bp.hangoutsChat = {};
-  bp.hangoutsChat.sendMessage = async (space, message) =>
+  bp.hangoutsChat.sendMessage = async (space, message, cards = undefined) =>
     bp.middlewares.sendOutgoing(
-      actions.createMessageOutgoingEvent(space, message)
+      actions.createMessageOutgoingEvent(space, message, cards)
     );
   bp.hangoutsChat.createMessage = actions.createMessageOutgoingEvent;
+  bp.hangoutsChat.cards = cards;
 
   umm.registerUmmConnector(bp);
 }

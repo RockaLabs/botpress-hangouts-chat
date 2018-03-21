@@ -48,19 +48,22 @@ export async function authGoogleClient(keys) {
  * See https://developers.google.com/hangouts/chat/reference/rest/v1/spaces.messages/create
  * for more info. Throws if the HTTP status code from the response is different
  * than 200.
- * @param {HangoutsChatSpace} space
- * @param {string} message
+ * @param {HangoutsChatSpace} space Space where the message will be sent
+ * @param {string} message Message text
+ * @param {?Array<object>} cards Optional cards that will be sent in the message
  * @returns {Promise<*>} Response from Hangouts Chat
  */
-export async function sendMessage(space, message) {
+export async function sendMessage(space, message, cards = undefined) {
   try {
     const endpoint = sendMessageApiEndpoint(space.name);
+    const reqBody = { text: message };
+    if (cards) {
+      reqBody.cards = cards;
+    }
     const apiRequest = await authClient.request({
       url: endpoint,
       method: 'post',
-      data: {
-        text: message
-      }
+      data: reqBody
     });
     if (apiRequest.status !== 200) {
       throw new Error(

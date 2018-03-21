@@ -16,7 +16,10 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,json,html,css,md}": ["prettier --write", "git add"]
+    "*.{js,jsx,json,html,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "author": "rockalabs",
   "license": "Botpress Proprietary License",
