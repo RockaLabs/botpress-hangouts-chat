@@ -267,8 +267,9 @@ composed of widgets. See more information about cards in the
 * `content` (String): The text of the content. Formatted text supported.
   Defaults to `''`.
 * `contentMultiline` (Boolean): If the content should be multiline.
+  Defaults to `false`.
 * `bottomLabel` (String): The text of the bottom label. Formatted text
-  supported.
+  supported. Defaults to `''`.
 * `icon` (String): An [enum value](https://developers.google.com/hangouts/chat/reference/message-formats/cards#builtinicons)
   that will be replaced by the Chat API with the corresponding icon image.
 
