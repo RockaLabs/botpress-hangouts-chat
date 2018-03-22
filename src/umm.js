@@ -18,7 +18,10 @@ import * as actions from './actions';
  */
 function processOutgoing({ event, blocName, instruction }) {
   if ('text' in instruction) {
-    return actions.createMessageOutgoingEvent(event.space, instruction.text);
+    return actions.createMessageOutgoingEvent(
+      event.space.name,
+      instruction.text
+    );
   }
 
   const unrecognizedInstruction = { ...instruction };

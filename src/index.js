@@ -13,10 +13,10 @@ function outgoingMiddleware(event, next) {
 
   switch (event.type) {
     case 'message': {
-      if (!event.space) {
-        return next(`Space missing in message event`);
+      if (!event.spaceName) {
+        return next(`Space name missing in message event`);
       }
-      outgoing.sendMessage(event.space, event.text, event.cards);
+      outgoing.sendMessage(event.spaceName, event.text, event.cards);
       break;
     }
     default: {
@@ -58,9 +58,9 @@ export function init(bp, configurator) {
   });
 
   bp.hangoutsChat = {};
-  bp.hangoutsChat.sendMessage = async (space, message, cards = undefined) =>
+  bp.hangoutsChat.sendMessage = async (spaceName, message, cards = undefined) =>
     bp.middlewares.sendOutgoing(
-      actions.createMessageOutgoingEvent(space, message, cards)
+      actions.createMessageOutgoingEvent(spaceName, message, cards)
     );
   bp.hangoutsChat.createMessage = actions.createMessageOutgoingEvent;
   bp.hangoutsChat.cards = cards;

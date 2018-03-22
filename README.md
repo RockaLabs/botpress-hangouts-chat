@@ -10,15 +10,15 @@ Hangouts Chat connector for Botpress
 module.exports = function(bp) {
   bp.hear(/ADDED_TO_SPACE_ROOM/i, (event, next) => {
     bp.hangoutsChat.sendMessage(
-      event.space,
+      event.space.name,
       `Thanks for adding me to ${event.space.displayName}!`
     );
   });
   bp.hear(/ADDED_TO_SPACE_DM/i, (event, next) => {
-    bp.hangoutsChat.sendMessage(event.space, 'Thanks for adding me!');
+    bp.hangoutsChat.sendMessage(event.space.name, 'Thanks for adding me!');
   });
   bp.hear(/hello|hi|test|hey|hola/i, (event, next) => {
-    bp.hangoutsChat.sendMessage(event.space, 'Hello human!');
+    bp.hangoutsChat.sendMessage(event.space.name, 'Hello human!');
   });
   bp.hear(
     {
@@ -26,7 +26,7 @@ module.exports = function(bp) {
       text: /.+/i
     },
     (event, next) => {
-      bp.hangoutsChat.sendMessage(event.space, `You said ${event.text}`);
+      bp.hangoutsChat.sendMessage(event.space.name, `You said ${event.text}`);
     }
   );
 };
@@ -80,7 +80,7 @@ You can listen to incoming event easily with Botpress by using `bp` built-in
 bp.hear(
   { platform: 'hangouts-chat', type: 'message', text: 'Hello' },
   (event, next) => {
-    bp.hangoutsChat.sendMessage(event.space, 'Welcome!');
+    bp.hangoutsChat.sendMessage(event.space.name, 'Welcome!');
   }
 );
 ```
@@ -163,12 +163,13 @@ card actions or buttons as of right now.
 In code, it is simple to send a message text to a specific space
 (see [Hangouts Chat docs](https://developers.google.com/hangouts/chat/reference/rest/v1/spaces.messages/create)).
 
-##### `bp.hangoutsChat.sendMessage(space, text, cards)`
+##### `bp.hangoutsChat.sendMessage(spaceName, text, cards)`
 
 ##### Arguments
 
-1.  `space` (Object): A Hangouts Chat Space object, corresponding to the space
-    where you want to send a message, see [Hangouts Chat Docs for spaces](https://developers.google.com/hangouts/chat/reference/rest/v1/spaces).
+1.  `spaceName` (String): The name of a Hangouts Chat space, corresponding to
+    the space where you want to send a message. It has the form `space/*`.
+    See [Hangouts Chat Docs for spaces](https://developers.google.com/hangouts/chat/reference/rest/v1/spaces).
 1.  `text` (String): Text message that will be sent to `space`.
 1.  `cards` (Array of cards): The cards that will be sent. Defaults to
     `[]`. See below how to create cards.
@@ -317,7 +318,7 @@ const card = bp.hangoutsChat.cards.createCard({
 });
 
 // Note that you must always pass an array of cards to hangoutsChat.sendMessage
-bp.hangoutsChat.sendMessage(event.space, '', [card]);
+bp.hangoutsChat.sendMessage(event.space.name, '', [card]);
 ```
 
 ### Creating actions without sending them
@@ -327,7 +328,7 @@ middleware. This is useful for example in conversations:
 
 ```javascript
 // This message won't be sent
-const message = bp.hangoutsChat.createMessage(event.space, 'Hello!');
+const message = bp.hangoutsChat.createMessage(event.space.name, 'Hello!');
 // But `message` is a fully formed middleware event object, ready to be sent
 convo.threads['default'].addMessage(message);
 ```

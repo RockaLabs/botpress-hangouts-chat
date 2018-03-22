@@ -14,13 +14,13 @@ import { EventTypes } from './events';
  * @param {string} text Message text
  * @param {?Array<object>} cards Optional cards that will be sent in the message
  */
-export function createMessageOutgoingEvent(space, text, cards = undefined) {
+export function createMessageOutgoingEvent(spaceName, text, cards = undefined) {
   const event = {
     platform: 'hangouts-chat',
     type: EventTypes.message,
     text: text,
-    space: space,
-    raw: { space, text }
+    spaceName: spaceName,
+    raw: { spaceName, text }
   };
   if (cards) {
     event.cards = cards;

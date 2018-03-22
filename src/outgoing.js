@@ -1,10 +1,4 @@
 /**
- * @typedef HangoutsChatSpace
- * @type {object}
- * @property {string} name
- * @property {"TYPE_UNSPECIFIED" | "ROOM" | "DM"} type
- * @property {string} displayName
- *
  * @typedef GoogleJsonKeys
  * @type {object}
  * @property {string} clientEmail
@@ -48,14 +42,14 @@ export async function authGoogleClient(keys) {
  * See https://developers.google.com/hangouts/chat/reference/rest/v1/spaces.messages/create
  * for more info. Throws if the HTTP status code from the response is different
  * than 200.
- * @param {HangoutsChatSpace} space Space where the message will be sent
+ * @param {string} spaceName Space where the message will be sent, has the form 'space/*'
  * @param {string} message Message text
  * @param {?Array<object>} cards Optional cards that will be sent in the message
  * @returns {Promise<*>} Response from Hangouts Chat
  */
-export async function sendMessage(space, message, cards = undefined) {
+export async function sendMessage(spaceName, message, cards = undefined) {
   try {
-    const endpoint = sendMessageApiEndpoint(space.name);
+    const endpoint = sendMessageApiEndpoint(spaceName);
     const reqBody = { text: message };
     if (cards) {
       reqBody.cards = cards;
