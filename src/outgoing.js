@@ -47,10 +47,15 @@ export async function authGoogleClient(keys) {
  * @param {?Array<object>} cards Optional cards that will be sent in the message
  * @returns {Promise<*>} Response from Hangouts Chat
  */
-export async function sendMessage(spaceName, message, cards = undefined) {
+export async function sendMessage(space, message, cards = undefined) {
   try {
+    const spaceMatch = space.match(/(spaces\/\w+)\/(threads\/\w+)/);
+    const spaceName = spaceMatch? spaceMatch[1] : space;
     const endpoint = sendMessageApiEndpoint(spaceName);
     const reqBody = { text: message };
+    if(spaceMatch) {
+      reqBody.thread = {name: space};
+    }
     if (cards) {
       reqBody.cards = cards;
     }
