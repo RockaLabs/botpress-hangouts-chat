@@ -58,9 +58,9 @@ export function init(bp, configurator) {
   });
 
   bp.hangoutsChat = {};
-  bp.hangoutsChat.sendMessage = async (spaceName, message, cards = undefined) =>
+  bp.hangoutsChat.sendMessage = async (spaceName, message, cards = undefined, threadKey = undefined) =>
     bp.middlewares.sendOutgoing(
-      actions.createMessageOutgoingEvent(spaceName, message, cards)
+      actions.createMessageOutgoingEvent(spaceName, message, cards, threadKey)
     );
   bp.hangoutsChat.createMessage = actions.createMessageOutgoingEvent;
   bp.hangoutsChat.cards = cards;

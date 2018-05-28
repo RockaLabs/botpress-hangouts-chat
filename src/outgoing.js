@@ -53,22 +53,23 @@ export async function sendMessage(space, message, cards = undefined, threadKey =
     const spaceName = spaceMatch? spaceMatch[1] : space;
     const endpoint = sendMessageApiEndpoint(spaceName);
     const reqBody = { text: message };
+    const params = {};
     if(spaceMatch) {
       reqBody.thread = {name: space};
     }
     if (cards) {
       reqBody.cards = cards;
     }
-    const params = {};
     if (threadKey) {
       params.threadKey = threadKey;
     }
-    const apiRequest = await authClient.request({
+    const request = {
       url: endpoint,
       method: 'post',
       params,
       data: reqBody
-    });
+    };
+    const apiRequest = await authClient.request(request);
     if (apiRequest.status !== 200) {
       throw new Error(
         `Something went wrong sending the message. Server said ${
