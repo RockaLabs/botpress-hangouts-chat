@@ -59,12 +59,14 @@ export async function sendMessage(space, message, cards = undefined, threadKey =
     if (cards) {
       reqBody.cards = cards;
     }
+    const params = {};
     if (threadKey) {
-      reqBody.threadKey = threadKey;
+      params.threadKey = threadKey;
     }
     const apiRequest = await authClient.request({
       url: endpoint,
       method: 'post',
+      params,
       data: reqBody
     });
     if (apiRequest.status !== 200) {
