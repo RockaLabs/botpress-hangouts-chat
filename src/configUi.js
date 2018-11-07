@@ -6,7 +6,7 @@ import * as outgoing from './outgoing';
  * @param {*} configurator
  */
 export function setUpApiForConfigUi(bp, configurator) {
-  const router = bp.getRouter('botpress-hangouts-chat');
+  const router = bp.getRouter('botpress-hangouts-chat', { auth: false });
 
   router.get('/config', async (req, res) => {
     const config = await configurator.loadAll();
