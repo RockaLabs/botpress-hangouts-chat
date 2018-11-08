@@ -24,10 +24,20 @@ class HangoutsChatModule extends React.Component {
   fetchConfig() {
     fetch('/api/botpress-hangouts-chat/config')
       .then(res => res.json())
-      .then(config => this.setState(config));
+      .then(config => {
+        console.log(
+          '----------- Debugging circular JSON --> fetchConfig ------------'
+        );
+        console.log(config);
+        return this.setState(config);
+      });
   }
 
   setConfig() {
+    console.log(
+      '----------- Debugging circular JSON --> setConfig ------------'
+    );
+    console.log(this.state);
     fetch('/api/botpress-hangouts-chat/config', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
