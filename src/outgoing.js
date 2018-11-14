@@ -47,15 +47,20 @@ export async function authGoogleClient(keys) {
  * @param {?Array<object>} cards Optional cards that will be sent in the message
  * @returns {Promise<*>} Response from Hangouts Chat
  */
-export async function sendMessage(space, message, cards = undefined, threadKey = undefined) {
+export async function sendMessage(
+  space,
+  message,
+  cards = undefined,
+  threadKey = undefined
+) {
   try {
     const spaceMatch = space.match(/(spaces\/\w+)\/(threads\/\w+)/);
-    const spaceName = spaceMatch? spaceMatch[1] : space;
+    const spaceName = spaceMatch ? spaceMatch[1] : space;
     const endpoint = sendMessageApiEndpoint(spaceName);
     const reqBody = { text: message };
     const params = {};
-    if(spaceMatch) {
-      reqBody.thread = {name: space};
+    if (spaceMatch) {
+      reqBody.thread = { name: space };
     }
     if (cards) {
       reqBody.cards = cards;
@@ -71,14 +76,10 @@ export async function sendMessage(space, message, cards = undefined, threadKey =
     };
     const apiRequest = await authClient.request(request);
     if (apiRequest.status !== 200) {
-      throw new Error(
-        `Something went wrong sending the message. Server said ${
-          apiRequest.status
-        }-${apiRequest.statusText}`
-      );
+      return {};
     }
     return apiRequest.data;
   } catch (err) {
-    throw err;
+    return {};
   }
 }
